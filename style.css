@@ -1,0 +1,129 @@
+@font-face {
+	font-family: 'pokemon';
+	src: url('Pokemon GB.ttf') format('truetype');
+	font-style: normal;
+}
+body{
+	font-family: 'pokemon';
+	font-size: 65%;
+}
+.pokemon{
+	width: 200px;
+	height: 310px;
+	border: 5px solid gray;
+	border-radius: 10px;
+	line-height: 10px;
+	padding: 10px;
+	float: left;
+	margin: 5px 10px;
+	font-size: 1.2em;
+	position: relative;
+}
+.pokemonnom{
+	background-color: #F8D058;
+	height: 125px;
+}
+.plante{
+	color: green;
+}
+.feu{
+	color: red;
+}
+.eau{
+	color: blue;
+}
+.foudre{
+	color: #F7BD21;
+}
+.psy{
+	color: #F85888;
+}
+.combat{
+	color: #C03028;
+}
+.spectre{
+	color: #705898;
+}
+div img:first-child{
+	margin-right: 30px;
+}
+h2{
+	margin-bottom: 30px;
+	text-align: center;
+	font-family: arial;
+	font-size: 1.6em;
+}
+.hpbarre{
+	display: inline-block;
+	border: 1px  solid gray;
+	border-radius: 5px;
+	width: 135px;
+	color: gray;
+	height: 15px;
+	text-align: center;
+	position: relative;
+	z-index: 2;
+}
+.hpnum{
+	text-align: right;
+	margin-right: 3px;
+}
+.full{
+	display: inline-block;
+	position: absolute;
+	left: 0;
+	background-color: #6EFAAA;
+	border-radius: 5px;
+	width: 135px;
+	height: 15px;
+	z-index: 10;
+}
+.medium{
+	display: inline-block;
+	position: absolute;
+	left: 0;
+	background-color: #F47C04;
+	border-radius: 5px;
+	width: 50%;
+	height: 15px;
+}
+.low{
+	display: inline-block;
+	position: absolute;
+	left: 0;
+	background-color: #BF0000;
+	border-radius: 5px;
+	width: 10%;
+	height: 15px;
+}
+.text{
+	width: 980px;
+	border: 5px solid gray;
+	border-radius: 10px;
+	height: 200px;
+	clear: both;
+	margin: 10px;
+	line-height: 5px;
+	font-size: 0.8em;
+	padding-left: 10px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	overflow: scroll;
+}
+.bt_atk, .bt_def{
+	border-radius: 10px;
+	width: 100px;
+	color: white;
+	height: 25px;
+	margin-left: 50px;
+}
+.bt_atk{
+	background-color: #DE523A;
+}
+.bt_def{
+	background-color: #427B9C;
+}
+.logfight{
+	line-height: 10px;
+}

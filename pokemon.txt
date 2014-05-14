@@ -1,0 +1,139 @@
+<?php
+
+class Pokemon {
+
+    public $nom;
+    public $niveau;
+    public $pv;
+    public $pv_max;
+    public $attaque;
+    public $defense;
+    public $evolution = array();
+    public $combat_log = array();
+
+    public function __construct($nom, $pv, $attaque, $defense) {
+        $this->nom = $nom;
+        $this->pv = $pv;
+        $this->pv_max = $pv;
+        $this->niveau = 1;
+        $this->attaque = $attaque;
+        $this->defense = $defense;
+    }
+
+    public function attaque(&$cible) {
+        $this->combat_log = array();
+        $this->combat_log[] = $this->nom.' attaque '.$cible->nom;
+        $cible->defendre($this->attaque, $this);
+        return $this;
+    }
+
+    public function defendre($attaque, &$attaquant) {
+        $hp_perdus = round($attaque - ($this->defense / 2));
+        $attaquant->combat_log[] = $this->nom.' encaisse '.$hp_perdus.' points de dégâts.';
+        $this->pv -= $hp_perdus;
+        if($this->pv <= 0) {
+            $this->pv = 0;
+            $this->mourir($attaquant);
+        }
+    }
+
+    public function mourir(&$attaquant){
+        $attaquant->combat_log[] = $this->nom.' meurt.';
+        $attaquant = $attaquant->gagner_niveau();
+    }
+
+    public function gagner_niveau(){
+        $this->ajuster_niveau($this->niveau+1);
+        $this->combat_log[] = $this->nom.' monte au niveau '.$this->niveau.'. Il a désormais '.$this->pv_max.' points de vie au maximum.'.PHP_EOL;
+        if(isset($this->evolution[$this->niveau])) {
+            $evo = new $this->evolution[$this->niveau]();
+            $evo->ajuster_niveau($this->niveau);
+            $this->combat_log[] = $this->nom.' évolue en '.$evo->nom.' ! Il a désormais '.$evo->pv_max.' points de vie.'.PHP_EOL;
+            $evo->combat_log = $this->combat_log;
+            return $evo;
+        }
+        return $this;
+    }
+
+    private function ajuster_niveau($niveau) {
+        $pv = $this->pv;
+        $pv_max = $this->pv_max;
+        $attaque = $this->attaque;
+        $defense = $this->defense;
+
+        for($i=$this->niveau+1;$i<=$niveau; $i++) {
+            $gain_pv = $pv_max * ($i / 10);
+            $pv_max += round($gain_pv);
+            $pv += round($gain_pv);
+            $attaque = $attaque + ($attaque * ($i / 10));
+            $defense = $defense + ($defense * ($i / 10));
+
+        }
+        $this->pv = $pv;
+        $this->pv_max = $pv_max;
+        $this->attaque = $attaque;
+        $this->defense = $defense;
+        $this->niveau = $niveau;
+    }
+
+}
+
+class Raichu extends Pokemon {
+
+    public function __construct(){
+        parent::__construct('Raichu', 30, 10, 4);
+    }
+
+}
+
+class Pikachu extends Pokemon {
+
+    public $evolution = array(5 => 'Raichu');
+
+    public function __construct(){
+        parent::__construct('Pikachu', 15, 8, 5);
+    }
+
+}
+
+class Papilusion extends Pokemon {
+
+    public function __construct(){
+        parent::__construct('Papilusion', 20, 3, 4);
+    }
+
+}
+
+class Chrysacier extends Pokemon {
+
+    public $evolution = array(10 => 'Papilusion');
+
+    public function __construct(){
+        parent::__construct('Chrysacier', 12, 1, 10);
+    }
+
+}
+
+class Chenipan extends Pokemon {
+
+    public $evolution = array(4 => 'Chrysacier');
+
+    public function __construct(){
+        parent::__construct('Chenipan', 15, 2, 2);
+    }
+
+}
+
+/*$pika = new Pikachu();
+var_dump($pika);
+for($i=0; $i<7;$i++) {
+    $pika = $pika->gagner_niveau();
+}
+var_dump($pika);*/
+$pika = new Pikachu();
+$chenipan = new Chenipan();
+for($i=0;$i<10;$i++) {
+    $pika = $pika->attaque($chenipan);
+    echo implode(PHP_EOL, $pika->combat_log);
+    echo PHP_EOL.'-------------------------'.PHP_EOL;
+}
